@@ -1,4 +1,4 @@
-import { existsSync, mkdirSync } from 'fs';
+import { existsSync } from 'fs';
 import { resolve } from 'path';
 import * as puppeteer from 'puppeteer';
 
@@ -97,7 +97,7 @@ export const listing = async () => {
 			const uploadEl = await e.$('input[name="image[attachment]"]');
 
 			const folder = resolve(`resources/${titles[i]}`);
-			!existsSync(folder) && mkdirSync(folder);
+			if (!existsSync(folder)) throw Error("Can't find file to upload");
 
 			const filePath = [0, 1]
 				.map(x => {
