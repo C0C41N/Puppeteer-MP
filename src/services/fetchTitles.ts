@@ -18,7 +18,7 @@ export const fetchTitles = async () => {
 		return [...(await a), title];
 	}, Promise.resolve(<string[]>[]));
 
-	const file = await getTitlesFilePath();
+	const file = getTitlesFilePath();
 
 	console.log('| writing file');
 
