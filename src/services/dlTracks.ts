@@ -42,7 +42,7 @@ export const dlTracks = async () => {
 
 			const stream = ytdl(url, options);
 
-			const file = `${getResourcesFolder()}/${title}`;
+			const file = `${getResourcesFolder()}/tracks/${title}`;
 
 			stream.pipe(createWriteStream(file));
 

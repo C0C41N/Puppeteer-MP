@@ -30,8 +30,8 @@ export const dlThumbs = async () => {
 			const query = encodeURIComponent(`vevo official ${title}`);
 			const link = `https://www.google.com/search?q=${query}&tbm=isch&tbs=isz:l`;
 
-			const folder = resolve(`resources/${title}`);
-			!existsSync(folder) && mkdirSync(folder);
+			const folder = resolve(`resources/thumbs/${title}`);
+			!existsSync(folder) && mkdirSync(folder, { recursive: true });
 
 			for (const i of [0, 1]) {
 				await page.goto(link);
