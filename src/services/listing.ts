@@ -84,7 +84,7 @@ export const listing = async () => {
 		})
 	);
 
-	for (const [i, e] of editPages.entries()) {
+	for (const e of editPages) {
 		await e.bringToFront();
 
 		await e.hover('#image-upload-button');
@@ -127,8 +127,6 @@ export const listing = async () => {
 			console.log('| uploading file');
 
 			await Promise.all([imagesChanged(), uploadEl.uploadFile(filePath)]);
-
-			console.log('| upload done');
 
 			const submit =
 				'.form-buttons > button[class="button cart-button"][type="submit"]';
