@@ -1,9 +1,16 @@
+import { closeSync, existsSync, mkdirSync, openSync } from 'fs';
 import { resolve } from 'path';
 import { Page } from 'puppeteer';
 
 import { titlesFileName } from './const';
 
-export const getTitlesFilePath = () => resolve(`resources/${titlesFileName}`);
+export const getTitlesFilePath = () => {
+	const folder = resolve('resources');
+	const file = resolve(`resources/${titlesFileName}`);
+	!existsSync(folder) && mkdirSync(folder);
+	!existsSync(file) && closeSync(openSync(file, 'w'));
+	return file;
+};
 
 export const prompt = async (text: string) =>
 	new Promise<string>(resolve => {

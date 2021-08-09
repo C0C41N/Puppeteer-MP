@@ -13,14 +13,17 @@ const init = async () => {
 	switch (choice) {
 		case '1':
 			await fetchTitles();
+			init();
 			break;
 
 		case '2':
 			await dlThumbs();
+			init();
 			break;
 
 		case '3':
 			await listing();
+			init();
 			break;
 
 		case 'all':
