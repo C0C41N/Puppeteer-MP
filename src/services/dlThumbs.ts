@@ -1,4 +1,4 @@
-import { readFileSync, writeFileSync } from 'fs';
+import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'fs';
 import { resolve } from 'path';
 import * as puppeteer from 'puppeteer';
 
@@ -27,39 +27,49 @@ export const dlThumbs = async () => {
 		titles.map(async title => {
 			const page = await browser.newPage();
 
-			const query = encodeURIComponent(title);
+			const query = encodeURIComponent(`vevo official ${title}`);
 			const link = `https://www.google.com/search?q=${query}&tbm=isch&tbs=isz:l`;
 
-			await page.goto(link);
+			const folder = resolve(`resources/${title}`);
+			!existsSync(folder) && mkdirSync(folder);
 
-			const firstImage = 'div[data-ct="0"] > a > div > img';
+			for (const i of [0, 1]) {
+				await page.goto(link);
 
-			await page.waitForSelector(firstImage);
-			await page.click(firstImage);
+				const image = `div[data-ri="${i}"] > a > div > img`;
 
-			const alt = await page.$eval(firstImage, e => e.getAttribute('alt'));
-			const imageLarge = `img[data-noaft="1"][alt="${alt}"]`;
+				await page.waitForSelector(image);
+				await page.click(image);
 
-			await page.waitForSelector(imageLarge);
+				const imageLarge = 'a[rlhc] > img[data-noaft]';
 
-			const getsrc = () =>
-				new Promise<string>(resolve => {
-					const interval = setInterval(async () => {
-						const e = await page.$eval(imageLarge, e => e.getAttribute('src'));
-						if (e.substr(0, 5) !== 'data:') {
-							clearInterval(interval);
-							resolve(e);
-						}
-					}, 250);
-				});
+				await page.waitForSelector(imageLarge);
 
-			const src = await getsrc();
+				const getsrc = () =>
+					new Promise<string>(resolve => {
+						const interval = setInterval(async () => {
+							const e = await page.$eval(imageLarge, e =>
+								e.getAttribute('src')
+							);
+							if (e.substr(0, 5) !== 'data:') {
+								clearInterval(interval);
+								resolve(e);
+							}
+						}, 250);
+					});
 
-			const view = await page.goto(src, { waitUntil: 'networkidle0' });
-			const ext = src.substr(-4);
-			const file = resolve(`resources/${title}${ext}`);
+				const src = await getsrc();
 
-			writeFileSync(file, await view.buffer());
+				try {
+					const view = await page.goto(src, { waitUntil: 'networkidle0' });
+					const ext = src.substr(-4);
+					const file = `${folder}/${i}${ext}`;
+
+					writeFileSync(file, await view.buffer());
+				} catch (error) {
+					console.log({ error });
+				}
+			}
 
 			page.close();
 
