@@ -100,9 +100,16 @@ export const listing = async () => {
 
 			const filePath = [0, 1]
 				.map(x => {
-					const jpeg = `${folder}/${x}.jpg`;
+					const jpg = `${folder}/${x}.jpg`;
+					const jpeg = `${folder}/${x}.jpeg`;
 					const png = `${folder}/${x}.png`;
-					return existsSync(jpeg) ? jpeg : existsSync(png) ? png : null;
+					return existsSync(jpg)
+						? jpg
+						: existsSync(jpeg)
+						? jpeg
+						: existsSync(png)
+						? png
+						: null;
 				})
 				.filter(e => e !== null)[0];
 
