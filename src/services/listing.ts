@@ -148,9 +148,9 @@ export const listing = async () => {
 
 			e.close();
 
-			log(`${titles[i]} // done\n`, 1);
+			log(`${titles[i]} // done\n`, { preLines: 1 });
 		})
 	);
 
-	log('All Done\n', 1);
+	log('All Done\n', { preLines: 1 });
 };

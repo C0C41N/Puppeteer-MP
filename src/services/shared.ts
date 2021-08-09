@@ -5,7 +5,7 @@ import { getCREDS } from '../common/crypto';
 import { log, numChildren } from '../common/util';
 
 export const loginTillEIds = async () => {
-	log('Starting...\n\n', 2);
+	log('Starting...\n\n', { preLines: 2 });
 	// starting browser
 
 	const browser = await puppeteer.launch({

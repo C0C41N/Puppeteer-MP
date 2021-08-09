@@ -65,5 +65,5 @@ export const dlTracks = async () => {
 
 	multibar.stop();
 
-	log('All Done', 2);
+	log('All Done', { preLines: 2 });
 };

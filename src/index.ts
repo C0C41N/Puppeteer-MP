@@ -11,7 +11,7 @@ const init = async () => {
 
 	const choice = await prompt(text);
 
-	log('', 2, true);
+	log('', { cls: true, decor: false, preLines: 2 });
 
 	switch (choice) {
 		case '1':

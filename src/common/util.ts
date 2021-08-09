@@ -3,11 +3,21 @@ import { resolve } from 'path';
 import { Page } from 'puppeteer';
 
 import { titlesFileName, tracksFileName } from './const';
+import { logOptions } from './types';
 
-export const log = (text: string, preLines = 0, cls = false) => {
-	if (cls) console.clear();
-	const lines = Array(preLines).fill('\n').join('');
-	console.log(`${lines}| ${text}`);
+export const log = (text: string, options?: logOptions) => {
+	const o = options || { cls: false, decor: true, preLines: 0 };
+	const { cls, decor, preLines } = o;
+
+	if (!!cls) console.clear();
+
+	const lines = Array(preLines || 0)
+		.fill('\n')
+		.join('');
+
+	const decorT = !!decor ? '| ' : '';
+
+	console.log(`${lines}${decorT}${text}`);
 };
 
 export const prompt = async (text: string) =>
