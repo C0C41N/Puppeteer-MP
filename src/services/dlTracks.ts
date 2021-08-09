@@ -6,6 +6,7 @@ import { Tracks } from '../common/types';
 import { getTracksFilePath, getTracksFolder, log } from '../common/util';
 
 import type { downloadOptions } from 'ytdl-core';
+
 export const dlTracks = async () => {
 	// reading file
 
@@ -64,5 +65,5 @@ export const dlTracks = async () => {
 
 	multibar.stop();
 
-	log('All Done');
+	log('All Done', 2);
 };

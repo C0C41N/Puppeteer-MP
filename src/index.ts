@@ -11,6 +11,8 @@ const init = async () => {
 
 	const choice = await prompt(text);
 
+	console.clear();
+
 	switch (choice) {
 		case '1':
 			await fetchTitles();
