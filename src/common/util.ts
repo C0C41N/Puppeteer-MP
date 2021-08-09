@@ -2,12 +2,22 @@ import { closeSync, existsSync, mkdirSync, openSync } from 'fs';
 import { resolve } from 'path';
 import { Page } from 'puppeteer';
 
-import { titlesFileName } from './const';
+import { titlesFileName, tracksFileName } from './const';
+
+export const getResourcesFolder = () => {
+	const folder = resolve('resources');
+	!existsSync(folder) && mkdirSync(folder);
+	return folder;
+};
 
 export const getTitlesFilePath = () => {
-	const folder = resolve('resources');
-	const file = resolve(`resources/${titlesFileName}`);
-	!existsSync(folder) && mkdirSync(folder);
+	const file = `${getResourcesFolder()}/${titlesFileName}`;
+	!existsSync(file) && closeSync(openSync(file, 'w'));
+	return file;
+};
+
+export const getTracksFilePath = () => {
+	const file = `${getResourcesFolder()}/${tracksFileName}`;
 	!existsSync(file) && closeSync(openSync(file, 'w'));
 	return file;
 };

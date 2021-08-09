@@ -2,7 +2,7 @@ import { existsSync } from 'fs';
 import { resolve } from 'path';
 import * as puppeteer from 'puppeteer';
 
-import { numChildren } from '../common/util';
+import { getResourcesFolder, numChildren } from '../common/util';
 import { loginTillEIds } from './shared';
 
 export const listing = async () => {
@@ -96,7 +96,7 @@ export const listing = async () => {
 		editPages.map(async (e, i) => {
 			const uploadEl = await e.$('input[name="image[attachment]"]');
 
-			const folder = resolve(`resources/${titles[i]}`);
+			const folder = `${getResourcesFolder()}/${titles[i]}`;
 			if (!existsSync(folder)) throw Error("Can't find file to upload");
 
 			const filePath = [0, 1]

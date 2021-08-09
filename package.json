@@ -16,6 +16,7 @@
 		"webpack-node-externals": "^3.0.0"
 	},
 	"dependencies": {
-		"puppeteer": "^10.2.0"
+		"puppeteer": "^10.2.0",
+		"ytdl-core": "^4.9.1"
 	}
 }

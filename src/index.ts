@@ -1,12 +1,13 @@
 import { prompt } from './common/util';
 import { dlThumbs } from './services/dlThumbs';
+import { dlTracks } from './services/dlTracks';
 import { fetchTitles } from './services/fetchTitles';
 import { listing } from './services/listing';
 
 const init = async () => {
 	const text =
-		'\n\n\t1 - Fetch titles\n\n\t2 - Download thumbs' +
-		'\n\n\t3 - List\n\nEnter\t';
+		'\n\n1 - Fetch titles\n\n2 - Download thumbs' +
+		'\n\n3 - List\n\n4 - Dowanload tracks\n\nEnter\t';
 
 	const choice = await prompt(text);
 
@@ -23,6 +24,11 @@ const init = async () => {
 
 		case '3':
 			await listing();
+			await init();
+			break;
+
+		case '4':
+			await dlTracks();
 			await init();
 			break;
 
