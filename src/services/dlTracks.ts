@@ -45,7 +45,7 @@ export const dlTracks = async () => {
 
 			const stream = ytdl(url, options);
 
-			const file = `${folder}/${title}`;
+			const file = `${folder}/${title}.mp3`;
 
 			stream.pipe(createWriteStream(file));
 
