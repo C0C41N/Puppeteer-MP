@@ -55,12 +55,14 @@ export const dlTracks = async () => {
 
 			return new Promise<void>(resolve => {
 				stream.once('end', () => {
-					multibar.stop();
+					bar.stop();
 					resolve();
 				});
 			});
 		})
 	);
+
+	multibar.stop();
 
 	log('All Done');
 };
