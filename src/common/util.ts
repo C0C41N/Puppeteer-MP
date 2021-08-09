@@ -4,7 +4,8 @@ import { Page } from 'puppeteer';
 
 import { titlesFileName, tracksFileName } from './const';
 
-export const log = (text: string, preLines = 0) => {
+export const log = (text: string, preLines = 0, cls = false) => {
+	if (cls) console.clear();
 	const lines = Array(preLines).fill('\n').join('');
 	console.log(`${lines}| ${text}`);
 };

@@ -1,4 +1,4 @@
-import { prompt } from './common/util';
+import { log, prompt } from './common/util';
 import { dlThumbs } from './services/dlThumbs';
 import { dlTracks } from './services/dlTracks';
 import { fetchTitles } from './services/fetchTitles';
@@ -11,7 +11,7 @@ const init = async () => {
 
 	const choice = await prompt(text);
 
-	console.clear();
+	log('', 2, true);
 
 	switch (choice) {
 		case '1':
