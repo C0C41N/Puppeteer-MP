@@ -9,6 +9,12 @@ export const log = (text: string, preLines = 0) => {
 	console.log(`${lines}| ${text}`);
 };
 
+export const getTracksFolder = () => {
+	const folder = `${getResourcesFolder()}/tracks`;
+	!existsSync(folder) && mkdirSync(folder);
+	return folder;
+};
+
 export const getResourcesFolder = () => {
 	const folder = resolve('resources');
 	!existsSync(folder) && mkdirSync(folder);

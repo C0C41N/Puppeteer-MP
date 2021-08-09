@@ -3,7 +3,7 @@ import { createWriteStream, readFileSync } from 'fs';
 import * as ytdl from 'ytdl-core';
 
 import { Tracks } from '../common/types';
-import { getResourcesFolder, getTracksFilePath, log } from '../common/util';
+import { getTracksFilePath, getTracksFolder, log } from '../common/util';
 
 import type { downloadOptions } from 'ytdl-core';
 export const dlTracks = async () => {
@@ -14,13 +14,17 @@ export const dlTracks = async () => {
 
 	const tracks: Tracks = JSON.parse(data.trim());
 
+	// make folder
+
+	const folder = getTracksFolder();
+
 	// setup progress bars
 
 	const multibar = new MultiBar(
 		{
 			clearOnComplete: true,
 			hideCursor: true,
-			format: '{bar} {percentage}% | {track}',
+			format: '{bar} {percentage}% | {title}',
 			fps: 60,
 			autopadding: true,
 		},
@@ -31,18 +35,16 @@ export const dlTracks = async () => {
 
 	await Promise.all(
 		Object.entries(tracks).map(async ([title, url]) => {
-			log(`${title} | dl started`);
-
 			const options: downloadOptions = {
 				filter: format => format.container === 'mp4',
 				quality: 'highestaudio',
 			};
 
-			const bar = multibar.create(100, 0);
+			const bar = multibar.create(100, 0, { title });
 
 			const stream = ytdl(url, options);
 
-			const file = `${getResourcesFolder()}/tracks/${title}`;
+			const file = `${folder}/${title}`;
 
 			stream.pipe(createWriteStream(file));
 
@@ -53,7 +55,6 @@ export const dlTracks = async () => {
 
 			return new Promise<void>(resolve => {
 				stream.once('end', () => {
-					log(`${title} | Done`);
 					multibar.stop();
 					resolve();
 				});
