@@ -49,7 +49,7 @@ export const dlTracks = async () => {
 			stream.pipe(createWriteStream(file));
 
 			stream.on('progress', (_, downloaded: number, total: number) => {
-				const percent = (downloaded * 90) / total;
+				const percent = (downloaded * 100) / total;
 				bar.update(percent);
 			});
 
