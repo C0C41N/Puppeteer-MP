@@ -1,9 +1,8 @@
-import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'fs';
-import { resolve } from 'path';
+import { readFileSync, writeFileSync } from 'fs';
 import * as puppeteer from 'puppeteer';
 
 import { headless } from '../common/const';
-import { getTitlesFilePath, log } from '../common/util';
+import { getTitleFolder, getTitlesFilePath, log } from '../common/util';
 
 export const dlThumbs = async () => {
 	// Reading file
@@ -30,8 +29,7 @@ export const dlThumbs = async () => {
 			const query = encodeURIComponent(`vevo official ${title}`);
 			const link = `https://www.google.com/search?q=${query}&tbm=isch&tbs=isz:l`;
 
-			const folder = resolve(`resources/thumbs/${title}`);
-			!existsSync(folder) && mkdirSync(folder, { recursive: true });
+			const folder = getTitleFolder(title);
 
 			for (const i of [0, 1]) {
 				await page.goto(link);

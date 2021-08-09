@@ -1,5 +1,4 @@
 import { existsSync } from 'fs';
-import { resolve } from 'path';
 import * as puppeteer from 'puppeteer';
 
 import { getResourcesFolder, log, numChildren } from '../common/util';
