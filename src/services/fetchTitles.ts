@@ -1,6 +1,6 @@
 import { writeFileSync } from 'fs';
 
-import { getTitlesFilePath } from '../common/util';
+import { getTitlesFilePath, log } from '../common/util';
 import { loginTillEIds } from './shared';
 
 export const fetchTitles = async () => {
@@ -8,7 +8,7 @@ export const fetchTitles = async () => {
 
 	if (!data) return;
 
-	console.log('| reading titles');
+	log('reading titles');
 
 	const { elIds, page } = data;
 
@@ -20,9 +20,9 @@ export const fetchTitles = async () => {
 
 	const file = getTitlesFilePath();
 
-	console.log('| writing file');
+	log('writing file');
 
 	writeFileSync(file, JSON.stringify(titles, null, '\t'));
 
-	console.log('| done\n\n');
+	log('done\n\n');
 };

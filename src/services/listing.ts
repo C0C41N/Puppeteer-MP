@@ -2,7 +2,7 @@ import { existsSync } from 'fs';
 import { resolve } from 'path';
 import * as puppeteer from 'puppeteer';
 
-import { getResourcesFolder, numChildren } from '../common/util';
+import { getResourcesFolder, log, numChildren } from '../common/util';
 import { loginTillEIds } from './shared';
 
 export const listing = async () => {
@@ -36,7 +36,7 @@ export const listing = async () => {
 
 	// Fill in product details
 
-	console.log('| adding details');
+	log('adding details');
 
 	const titles = await Promise.all(
 		editPages.map(async e => {
@@ -124,14 +124,14 @@ export const listing = async () => {
 					}, 250);
 				});
 
-			console.log('| uploading file');
+			log('uploading file');
 
 			await Promise.all([imagesChanged(), uploadEl.uploadFile(filePath)]);
 
 			const submit =
 				'.form-buttons > button[class="button cart-button"][type="submit"]';
 
-			console.log('| submitting');
+			log('submitting');
 
 			const clicker = () =>
 				new Promise<void>(resolve => {
@@ -149,9 +149,9 @@ export const listing = async () => {
 
 			e.close();
 
-			console.log(`\n| ${titles[i]} // done\n`);
+			log(`${titles[i]} // done\n`, 1);
 		})
 	);
 
-	console.log('\n| All Done\n');
+	log('All Done\n', 1);
 };

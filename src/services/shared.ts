@@ -2,10 +2,10 @@ import * as puppeteer from 'puppeteer';
 
 import { headless } from '../common/const';
 import { getCREDS } from '../common/crypto';
-import { numChildren } from '../common/util';
+import { log, numChildren } from '../common/util';
 
 export const loginTillEIds = async () => {
-	console.log('\n\n| Starting...\n\n');
+	log('Starting...\n\n', 2);
 	// starting browser
 
 	const browser = await puppeteer.launch({
@@ -37,17 +37,15 @@ export const loginTillEIds = async () => {
 
 	await page.waitForSelector('#dd_items');
 
-	console.log('| logged in');
+	log('logged in');
 
 	// count unlisted items
 
 	const elCount = await numChildren(page, '#dd_items > tbody');
 
-	if (elCount === 0) {
-		return console.log('| no unlisted elements');
-	}
+	if (elCount === 0) return log('no unlisted elements');
 
-	console.log('| unlisted elements found');
+	log('unlisted elements found');
 
 	const elIds = await page.$eval(
 		'#dd_items > tbody',

@@ -4,6 +4,11 @@ import { Page } from 'puppeteer';
 
 import { titlesFileName, tracksFileName } from './const';
 
+export const log = (text: string, preLines = 0) => {
+	const lines = Array(preLines).fill('\n').join('');
+	console.log(`${lines}| ${text}`);
+};
+
 export const getResourcesFolder = () => {
 	const folder = resolve('resources');
 	!existsSync(folder) && mkdirSync(folder);

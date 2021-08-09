@@ -3,7 +3,7 @@ import { resolve } from 'path';
 import * as puppeteer from 'puppeteer';
 
 import { headless } from '../common/const';
-import { getTitlesFilePath } from '../common/util';
+import { getTitlesFilePath, log } from '../common/util';
 
 export const dlThumbs = async () => {
 	// Reading file
@@ -73,7 +73,7 @@ export const dlThumbs = async () => {
 
 			page.close();
 
-			console.log(`| ${title} | Done`);
+			log(`${title} | Done`);
 		})
 	);
 };
