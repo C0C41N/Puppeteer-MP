@@ -57,11 +57,11 @@ export const listing = async () => {
 
 			// put description
 
-			await e.$eval(
-				'#product_en-US_description',
-				(e: HTMLTextAreaElement, title: string) => (e.value = title),
-				title
-			);
+			// await e.$eval(
+			// 	'#product_en-US_description',
+			// 	(e: HTMLTextAreaElement, title: string) => (e.value = title),
+			// 	title
+			// );
 
 			// put keywords
 
