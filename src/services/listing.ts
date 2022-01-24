@@ -65,7 +65,7 @@ export const listing = async () => {
 
 			// put keywords
 
-			const keywords = title.split(' ').join(', ') + ", feat, ft., ft, didn't, /, ?, music, dancer, dance, song, tsharp, cocaine, complex, x";
+			const keywords = title.split(' ').join(', ') + ", feat, ft., ft, didn't, /, ?, music, dancer, dance, song, tsharp, cocaine, complex, x, nba";
 
 			await e.$eval(
 				'#product_en-US_keywords',
