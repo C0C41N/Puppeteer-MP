@@ -19,6 +19,6 @@
 	"dependencies": {
 		"cli-progress": "^3.9.0",
 		"puppeteer": "^10.2.0",
-		"ytdl-core": "^4.10.1"
+		"ytdl-core": "^4.11.0"
 	}
 }
