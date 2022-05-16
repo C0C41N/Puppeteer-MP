@@ -21,7 +21,7 @@ export const loginTillEIds = async () => {
 	// log in
 
 	await page.goto(
-		'https://id.secondlife.com/openid/login?return_to=https%3A%2F%2Fmarketplace.secondlife.com%2Fmerchants%2F7465107%2Fstore%2Fproducts%3Fproduct_state%3Dunlisted%26page%3D1%26per_page%3D100%26per_page%3D100'
+		'https://id.secondlife.com/openid/login?return_to=https%3A%2F%2Fmarketplace.secondlife.com%2Fmerchants%2F7465107%2Fstore%2Fproducts.7465107%3Flisting_state%3Dunlisted%26page%3D1%26per_page%3D100%26product_state%3Dunlisted'
 	);
 
 	await page.waitForSelector('#username');
