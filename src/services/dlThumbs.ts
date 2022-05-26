@@ -1,4 +1,5 @@
 import { readFileSync, writeFileSync } from 'fs';
+import getYTID from 'get-youtube-id';
 import * as puppeteer from 'puppeteer';
 import * as sharp from 'sharp';
 
@@ -28,25 +29,33 @@ export const dlThumbs = async () => {
 		Object.entries(thumbs).map(async ([title, url]) => {
 			const page = await browser.newPage();
 
-			const vId = url.split('/')[3];
+			const vId = getYTID(url, { fuzzy: false });
 			const file = `${getThumbsFolder()}/${title}.jpg`;
-			const imgURL = `https://i.ytimg.com/vi/${vId}/hqdefault.jpg`;
 
-			try {
-				const view = await page.goto(imgURL, { waitUntil: 'networkidle0' });
-				const dlImgBuffer = await view.buffer();
+			const imgURLs = [
+				`https://i.ytimg.com/vi/${vId}/maxresdefault.jpg`,
+				`https://i.ytimg.com/vi/${vId}/hqdefault.jpg`,
+			];
 
-				const buffer = await sharp(dlImgBuffer)
-					.resize({ width: 700 })
-					.toBuffer();
+			for (const u of imgURLs) {
+				try {
+					const view = await page.goto(u, { waitUntil: 'networkidle0' });
+					const dlImgBuffer = await view.buffer();
 
-				writeFileSync(file, buffer);
-			} catch (error) {
-				console.log({ error });
+					const buffer = await sharp(dlImgBuffer)
+						.resize({ width: 700, height: 525, fit: 'contain' })
+						.toBuffer();
+
+					writeFileSync(file, buffer);
+
+					if (view.status() === 200) break;
+				} catch (error) {
+					console.log({ error });
+				}
 			}
 
 			page.close();
-			log(`${title} | ${url} | Done`);
+			log(`${title} | Done`);
 		})
 	);
 };
