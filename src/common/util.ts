@@ -2,7 +2,7 @@ import { closeSync, existsSync, mkdirSync, openSync } from 'fs';
 import { resolve } from 'path';
 import { Page } from 'puppeteer';
 
-import { titlesFileName, tracksFileName } from './const';
+import { thumbsFileName, titlesFileName, tracksFileName } from './const';
 import { logOptions } from './types';
 
 export const log = (text: string, options?: logOptions) => {
@@ -67,6 +67,12 @@ export const getTitlesFilePath = () => {
 
 export const getTracksFilePath = () => {
 	const file = `${getResourcesFolder()}/${tracksFileName}`;
+	!existsSync(file) && closeSync(openSync(file, 'w'));
+	return file;
+};
+
+export const getThumbsFilePath = () => {
+	const file = `${getResourcesFolder()}/${thumbsFileName}`;
 	!existsSync(file) && closeSync(openSync(file, 'w'));
 	return file;
 };

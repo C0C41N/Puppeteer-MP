@@ -1,16 +1,16 @@
 import { readFileSync, writeFileSync } from 'fs';
 import * as puppeteer from 'puppeteer';
+import * as sharp from 'sharp';
 
 import { headless } from '../common/const';
-import { getTitleFolder, getTitlesFilePath, log } from '../common/util';
+import { Tracks } from '../common/types';
+import { getThumbsFilePath, getThumbsFolder, log } from '../common/util';
 
 export const dlThumbs = async () => {
-	// Reading file
+	// reading file
 
-	const file = getTitlesFilePath();
-	const data = readFileSync(file, { encoding: 'utf8' });
-
-	const titles: string[] = JSON.parse(data.trim());
+	const file = getThumbsFilePath();
+	const data = readFileSync(file, { encoding: 'utf-8' });
 
 	// starting browser
 
@@ -22,56 +22,31 @@ export const dlThumbs = async () => {
 
 	// dl images
 
+	const thumbs: Tracks = JSON.parse(data.trim());
+
 	await Promise.all(
-		titles.map(async title => {
+		Object.entries(thumbs).map(async ([title, url]) => {
 			const page = await browser.newPage();
 
-			const query = encodeURIComponent(`vevo official ${title}`);
-			const link = `https://www.google.com/search?q=${query}&tbm=isch&tbs=isz:l`;
+			const vId = url.split('/')[3];
+			const file = `${getThumbsFolder()}/${title}.jpg`;
+			const imgURL = `https://i.ytimg.com/vi/${vId}/hqdefault.jpg`;
 
-			const folder = getTitleFolder(title);
+			try {
+				const view = await page.goto(imgURL, { waitUntil: 'networkidle0' });
+				const dlImgBuffer = await view.buffer();
 
-			for (const i of [0, 1]) {
-				await page.goto(link);
+				const buffer = await sharp(dlImgBuffer)
+					.resize({ width: 700 })
+					.toBuffer();
 
-				const image = `div[data-ri="${i}"] > a > div > img`;
-
-				await page.waitForSelector(image);
-				await page.click(image);
-
-				const imageLarge = 'a[rlhc] > img[data-noaft]';
-
-				await page.waitForSelector(imageLarge);
-
-				const getsrc = () =>
-					new Promise<string>(resolve => {
-						const interval = setInterval(async () => {
-							const e = await page.$eval(imageLarge, e =>
-								e.getAttribute('src')
-							);
-							if (e.substr(0, 5) !== 'data:') {
-								clearInterval(interval);
-								resolve(e);
-							}
-						}, 250);
-					});
-
-				const src = await getsrc();
-
-				try {
-					const view = await page.goto(src, { waitUntil: 'networkidle0' });
-					const ext = src.substr(-4);
-					const file = `${folder}/${i}${ext}`;
-
-					writeFileSync(file, await view.buffer());
-				} catch (error) {
-					console.log({ error });
-				}
+				writeFileSync(file, buffer);
+			} catch (error) {
+				console.log({ error });
 			}
 
 			page.close();
-
-			log(`${title} | Done`);
+			log(`${title} | ${url} | Done`);
 		})
 	);
 };

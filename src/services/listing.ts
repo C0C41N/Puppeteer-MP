@@ -95,25 +95,8 @@ export const listing = async () => {
 		editPages.map(async (e, i) => {
 			const uploadEl = await e.$('input[name="image[attachment]"]');
 
-			const folder = `${getThumbsFolder()}/${titles[i]}`;
-			if (!existsSync(folder)) throw Error("Can't find file to upload");
-
-			const filePath = [0, 1]
-				.map(x => {
-					const jpg = `${folder}/${x}.jpg`;
-					const jpeg = `${folder}/${x}.jpeg`;
-					const png = `${folder}/${x}.png`;
-					return existsSync(jpg)
-						? jpg
-						: existsSync(jpeg)
-						? jpeg
-						: existsSync(png)
-						? png
-						: null;
-				})
-				.filter(e => e !== null)[0];
-
-			if (!filePath) throw Error("Can't find file to upload");
+			const filePath = `${getThumbsFolder()}/${titles[i]}.jpg`;
+			if (!existsSync(filePath)) throw Error("Can't find file to upload");
 
 			const imagesChanged = () =>
 				new Promise<void>(async resolve => {
