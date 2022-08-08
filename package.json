@@ -5,7 +5,7 @@
 	"license": "MIT",
 	"private": true,
 	"scripts": {
-		"start": "yarn build && cls && node ./dist/index.js",
+		"start": "yarn build && node ./dist/index.js",
 		"build": "webpack"
 	},
 	"devDependencies": {
